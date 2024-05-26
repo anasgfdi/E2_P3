@@ -1,40 +1,132 @@
+{% extends 'base.html' %}
 {% load static %}
+ 
+{% block content %}
 
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset='utf-8'>
-    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <title>Prédiction du prix de la maison</title>
-    <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <link rel='stylesheet' type='text/css' media='screen' href="{% static 'main_app/style.css' %}">
-    <script src='main.js'></script>
-</head>
+ <style>
+  .bd-placeholder-img {
+    font-size: 1.125rem;
+    text-anchor: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+  }
 
-<body>
-    <div class="register_page">
-        <div class="form">
-            <form action="{% url 'predict' %}" method="post">
-                {% csrf_token %}
+  @media (min-width: 768px) {
+    .bd-placeholder-img-lg {
+      font-size: 3.5rem;
+    }
+  }
 
-                Année de construction: <input type="number" name='Year_Built' placeholder="Quelle est l'année de construction?"><br>
-                Surface de la cave: <input type="number" name='Total_Bsmt_SF' placeholder="Surface de la cave en m2"><br>
-                Surface du premier étage: <input type="number" name='1st_Flr_SF' placeholder="Surface du 1er étage en m2"><br>
-                Surface habitable au sol: <input type="number" name='Gr_Liv_Area' placeholder="Surface habitable en m2"><br>
-                Surface du garage: <input type="number" name='Garage_Area' placeholder="Surface du garage en m2"><br>
-                Qualité générale des finitions et des matérieux: <input type="number" name='Overall_Qual' placeholder="Qualité entre 1 (très mauvais) et 10 (Excellent)"><br>
-                Nombre de salle de bain: <input type="number" name='Full_Bath' placeholder="Nombre de salles de bain"><br>
-                Qualité des matériaux extérieurs: <input type="text" name='Exter_Qual' placeholder=" Ex:Excellent, Gd:Good, TA:Average, Fa:Fair, Po:Poor"><br>
-                Qualité des matérieux de la cuisine: <input type="text" name='Kitchen_Qual' placeholder="Ex:Excellent, Gd:Good, TA:Average, Fa:Fair, Po:Poor"><br>
-                Quartier: <input type="text" name='Neighborhood' placeholder="Nom du quartier de Ames"><br>
-                <input type="submit" value="predict" class="submit">
-            </form>
-            <p> La maison vaut: {{data}}</p>
-        </div>
+  .form{
+    border-radius: 15px;
+    {% comment %} position: relative; {% endcomment %}
+    z-index: 1;
+    background: #ffff;
+    margin: 20px;
+    padding: 5px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.25);
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+}
 
+form label {
+    font-size: large;
+}
+.btn-primary{
+    font-size: large;
+    text-transform: capitalize;
+
+}
+
+
+
+  .b-example-divider {
+    height: 3rem;
+    background-color: rgba(0, 0, 0, .1);
+    border: solid rgba(0, 0, 0, .15);
+    border-width: 1px 0;
+    box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+  }
+
+  .b-example-vr {
+    flex-shrink: 0;
+    width: 1.5rem;
+    height: 100vh;
+  }
+
+  .bi {
+    vertical-align: -.125em;
+    fill: currentColor;
+  }
+
+  .nav-scroller {
+    position: relative;
+    z-index: 2;
+    height: 2.75rem;
+    overflow-y: hidden;
+  }
+
+  .nav-scroller .nav {
+    display: flex;
+    flex-wrap: nowrap;
+    padding-bottom: 1rem;
+    margin-top: -1px;
+    overflow-x: auto;
+    text-align: center;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+  }
+</style> 
+
+<main>
+  <section class="py-5 text-center container">
+    <div class="row py-lg-5">
+      <div class="col-lg-6 col-md-8 mx-auto">
+        <h1 class="display-5 fw-bold lh-1 mb-3">Estimation du prix d'une maison</h1>
+
+      </div>
+    </div>
+  </section>
+  
+    <div class="container">
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3"> 
+
+        
+          <section class="py-5 text-center container">
+            <div class="card shadow-sm">
+              <img src="{% static 'images/house.jpg' %}">                            
+            </div>
+          </section>
+          
+      </div>
     </div>
 
+    
+    <div class="d-grid gap-2 col-6 mx-auto">
+        <div class="form">
+        <form method="POST">
 
-</body>
+            {% csrf_token %}
+            {% for field in form %}
+            <div class="form-group">
+                <label class="form-label">{{ field.label }}</label>
+                <div>
+                    <p class='input_field'>{{ field }}</p>
+                </div>
+            </div>
+            {% endfor %}
+            <div>
+                <input class="btn btn-primary" type="submit" value="Valider">
+            </div>
+        </form>
+    </div>
+    </div>
+    </div> 
 
-</html>
+
+
+</main>  
+
+{% endblock content %}
